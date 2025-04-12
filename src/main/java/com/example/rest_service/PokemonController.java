@@ -35,12 +35,18 @@ public class PokemonController {
     }
 
     @PutMapping("/{id}")
-    public Pokemon updatePokemon(@PathVariable Long id, @RequestBody Pokemon pokemon) {
+    public ResponseEntity updatePokemon(@PathVariable Long id, @RequestBody Pokemon pokemon) {
         Pokemon currentPokemon = pokemonRepo.findById(id).orElseThrow(RuntimeException::new);
         currentPokemon.setName(pokemon.getName());
         currentPokemon.setType(pokemon.getType());
 
         return ResponseEntity.ok(currentPokemon);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deletePokemon(@PathVariable Long id) {
+        pokemonRepo.deleteById(id);
+        return ResponseEntity.ok().build(); 
     }
 
 }
