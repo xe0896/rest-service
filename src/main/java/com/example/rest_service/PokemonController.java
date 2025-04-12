@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController // HTTP requests are handled here, from the @RestController
-public class GreetingController {
+public class PokemonController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
