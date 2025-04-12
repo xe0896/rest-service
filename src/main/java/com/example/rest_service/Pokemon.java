@@ -1,15 +1,15 @@
 package com.example.rest_service; // Includes itself within this package
 
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "pokemon")
+@Entity // Ensures persistence within the JPA database 
+@Table(name = "pokemon") // Names JPA database, not very useful as default is the entities name which is Pokemon, no different to pokemon
 public class Pokemon {
-    @Id
-    @GeneratedValue
+    @Id // Ensures ID is the primary key
+    @GeneratedValue // Ensures uniqueness of primary key
     private long ID;
     
     private String name;
@@ -20,6 +20,7 @@ public class Pokemon {
         this.type = type;
     }
 
+    /* Getter methods */
     public long getID() {
         return this.ID;
     }
@@ -32,6 +33,7 @@ public class Pokemon {
         return this.type;
     }
 
+    /* Setter methods */
     public void setID(Long id) {
         this.ID = id;
     }
