@@ -1,18 +1,46 @@
 package com.example.rest_service;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController // HTTP requests are handled here, from the @RestController
+@RequestMapping("/pokemon")
 public class PokemonController {
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    
+    private final PokemonRepo pokemonRepo;
+    
+    public PokemonController(PokemonRepo pokemonRepo) {
+        this.pokemonRepo = pokemonRepo;
+    }
 
-    @GetMapping("/greeting") // Ensures GET request to /greeting are mapped to the greeting() method
-      public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-		    return new Greeting(counter.incrementAndGet(), String.format(template, name));
-	  }
-} 
+    @GetMapping
+    public List<Pokemon> getPokemon() {
+        return pokemonRepo.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public Pokemon getPokemon(@PathVariable Long id) {
+        return pokemonRepo.findById(id).orElseThrow(RuntimeException::new); // new RuntimeException() since it expects a supplier 
+    }
+
+    @PostMapping
+    public ResponseEntity createPokemon(@RequestBody Pokemon pokemon) throws URISyntaxException {
+        Pokemon savedPokemon = pokemonRepo.save(pokemon);
+        return ResponseEntity.created(new URI("/pokemon/" + savedPokemon.getID())).body(savedPokemon);
+    }
+
+    @PutMapping("/{id}")
+    public Pokemon updatePokemon(@PathVariable Long id, @RequestBody Pokemon pokemon) {
+        Pokemon currentPokemon = pokemonRepo.findById(id).orElseThrow(RuntimeException::new);
+        currentPokemon.setName(pokemon.getName());
+        currentPokemon.setType(pokemon.getType());
+
+        return ResponseEntity.ok(currentPokemon);
+    }
+
+}
