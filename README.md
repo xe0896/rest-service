@@ -8,8 +8,8 @@ Then go to the branch that actually has some cool stuff by doing:
 ```powershell
 git checkout rest-react
 ```
-To allow ourselves to use React, we must do the following to include the `node_modules` folder which has all the relevant React code, I have `.gitignore` the file since updates may occur
-```powershell
+To allow ourselves to use React, we must do the following to include the `node_modules` folder which includes the code that will run React, this isn't included in the repository as doing this yourself ensures you get the up to date version.
+```
 npm install
 ```
 
